@@ -1,0 +1,97 @@
+@import "tailwindcss";
+
+@font-face {
+  font-family: Geist;
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url("/fonts/geist-latin.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Geist Mono";
+  font-style: normal;
+  font-weight: 500 700;
+  font-display: swap;
+  src: url("/fonts/geist-mono-latin.woff2") format("woff2");
+}
+
+:root {
+  color-scheme: dark;
+  font-family: Geist, system-ui, sans-serif;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  font-kerning: normal;
+  font-optical-sizing: auto;
+  font-variant-numeric: tabular-nums;
+  background: #090b0f;
+  color: #f5f7fa;
+  --ink: #f5f7fa;
+  --page: #090b0f;
+  --surface: #101319;
+  --card: #151922;
+  --hover: #1c222d;
+  --line: #292f3a;
+  --muted: #a1a9b8;
+  --dim: #707989;
+  --teal: #2dd4bf;
+  --lime: #a3e635;
+  --radius: 0.625rem;
+}
+
+@theme inline {
+  --color-background: var(--page);
+  --color-foreground: var(--ink);
+  --color-card: var(--card);
+  --color-muted: var(--muted);
+  --color-primary: var(--lime);
+  --color-ring: var(--teal);
+  --radius-md: var(--radius);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  min-width: 320px;
+  min-height: 100%;
+  background: var(--page);
+}
+
+body {
+  min-width: 320px;
+  min-height: 100vh;
+  margin: 0;
+  background:
+    radial-gradient(900px 500px at 85% -10%, rgb(163 230 53 / 8%), transparent 60%),
+    radial-gradient(700px 500px at 0% 0%, rgb(45 212 191 / 7%), transparent 60%),
+    var(--page);
+}
+
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+button:focus-visible,
+a:focus-visible {
+  outline: 2px solid var(--teal);
+  outline-offset: 2px;
+}
+
+::selection {
+  background: rgb(45 212 191 / 28%);
+  color: var(--ink);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

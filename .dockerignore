@@ -1,0 +1,17 @@
+.git
+.gitignore
+.pnpm-store
+node_modules
+dist
+coverage
+playwright-report
+test-results
+Dockerfile*
+docker-compose*.yml
+.env
+.env.*
+!.env.example
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+*.tsbuildinfo

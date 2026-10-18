@@ -1,0 +1,11 @@
+services:
+  app:
+    build:
+      context: .
+      target: production
+      args:
+        NODE_VERSION: 24.22.0
+    init: true
+    ports:
+      - "8080:80"
+    restart: unless-stopped
