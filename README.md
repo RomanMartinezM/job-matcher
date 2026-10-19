@@ -5,11 +5,11 @@ The dashboard is the first screen migrated from the supplied HTML prototype. The
 ## Start the app
 
 ```sh
-pnpm install
-pnpm dev
+npm ci
+npm run dev
 ```
 
-Use Node.js 24.22.0 with pnpm. The project uses Vite, React, TypeScript, Tailwind CSS 4, and shadcn-style local components.
+Use Node.js 24.22.0 with npm. The project uses Vite, React, TypeScript, Tailwind CSS 4, and shadcn-style local components.
 
 ## Run with Docker
 
