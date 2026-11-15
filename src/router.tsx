@@ -3,6 +3,7 @@ import { AppShell } from "@/components/AppShell"
 import { DashboardPage } from "@/pages/DashboardPage"
 import { NotMigratedPage } from "@/pages/NotMigratedPage"
 import { ResumesPage } from "@/pages/ResumesPage"
+import { ExploreJobsPage } from "@/pages/ExploreJobsPage"
 
 export const router = createBrowserRouter([
   {
@@ -10,7 +11,7 @@ export const router = createBrowserRouter([
     element: <AppShell />,
     children: [
       { index: true, element: <DashboardPage /> },
-      { path: "jobs", element: <NotMigratedPage title="Explore jobs" /> },
+      { path: "jobs", element: <ExploreJobsPage /> },
       { path: "matches", element: <NotMigratedPage title="AI matches" /> },
       { path: "optimizer", element: <NotMigratedPage title="Resume optimizer" /> },
       { path: "resumes", element: <ResumesPage /> },
