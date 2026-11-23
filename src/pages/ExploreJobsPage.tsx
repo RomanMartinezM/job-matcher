@@ -1,4 +1,4 @@
-import { jobs } from "@/data/jobs"
+import { candidateSkills,jobs } from "@/data/jobs"
 import { useState } from "react"
 import { useAppStore } from "@/store/useAppStore"
 
@@ -75,10 +75,14 @@ export function ExploreJobsPage() {
             {/* First grid column: your existing list */}
             <ul>
                 {filteredJobs.map((job) => (
-                <li
-                    key={job.id}
-                    className="flex items-center gap-4 rounded-xl border border-[#292F3A] bg-[#151922] p-4"
-                >
+                    <li
+                        key={job.id}
+                        className={`flex items-center gap-4 rounded-xl border bg-[#151922] p-4 ${
+                            selectedJob?.id === job.id
+                            ? "border-teal-300 ring-1 ring-teal-300/30"
+                            : "border-[#292F3A]"
+                        }`}
+                    >
                     <div
                         aria-hidden="true"
                         className="grid size-10 shrink-0 place-items-center rounded-lg text-sm font-semibold text-white"
@@ -92,11 +96,7 @@ export function ExploreJobsPage() {
                     </div>
 
                     <button
-                        className={`flex items-center gap-4 rounded-xl border bg-[#151922] p-4 ${
-                            selectedJobId === job.id
-                            ? "border-teal-300 ring-1 ring-teal-300/30"
-                            : "border-[#292F3A]"
-                        }`}
+                        className="min-w-0 flex-1 text-left"
                         onClick={() => setSelectedJobId(job.id)}
                         type="button"
                         >
@@ -139,11 +139,26 @@ export function ExploreJobsPage() {
                     <p>{selectedJob.salary}</p>
 
                     <h3>Required skills</h3>
-                    <ul>
-                        {selectedJob.skills.map((skill) => (
-                        <li key={skill}>{skill}</li>
-                        ))}
-                    </ul>
+                    
+                    <div className="flex flex-wrap gap-1.5">
+                        {selectedJob.skills.map((skill) => {
+                            const isMatched = candidateSkills.has(skill)
+
+                            return (
+                            <span
+                                className={`rounded-md border px-2 py-1 text-xs ${
+                                isMatched
+                                    ? "border-teal-300/30 bg-teal-300/10 text-teal-200"
+                                    : "border-[#292F3A] bg-[#1C222D] text-[#A1A9B8]"
+                                }`}
+                                key={skill}
+                            >
+                                {skill}
+                            </span>
+                            )
+                        })}
+                    </div>
+
                     </>
                 ) : (
                     <p>Select a job to see its details.</p>
