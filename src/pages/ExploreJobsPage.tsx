@@ -38,7 +38,9 @@ export function ExploreJobsPage() {
     
     return (
       <main>
-        <h1>Explore jobs</h1>
+        <h1 className="mb-5 text-3xl font-semibold tracking-[-0.04em] sm:text-[34px]">
+            Explore jobs
+        </h1>
         <div className="mb-4 grid grid-cols-2 gap-2 md:grid-cols-[2fr_1fr_1fr_auto]">
             <input
                 className="col-span-2 min-h-11 rounded-[10px] border border-[#292F3A] bg-[#101319] px-3 text-sm text-[#F5F7FA] placeholder:text-[#707989] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-300 md:col-span-1"
@@ -92,7 +94,7 @@ export function ExploreJobsPage() {
         </p>
   
         {filteredJobs.length > 0 ? (
-        <div className="grid gap-4 lg:grid-cols-[1.3fr_1fr]">
+        <div className="grid items-start gap-4 lg:grid-cols-[1.3fr_1fr]">
             {/* First grid column: your existing list */}
             <ul className="grid gap-2.5">
                 {filteredJobs.map((job) => (
@@ -141,6 +143,11 @@ export function ExploreJobsPage() {
                         </div>
                     </button>
                     <button
+                            className={`shrink-0 rounded-lg border px-3 py-2 text-sm ${
+                                savedJobIds.includes(job.id)
+                                ? "border-lime-300/30 bg-lime-300/10 text-lime-200"
+                                : "border-[#292F3A] text-[#F5F7FA]"
+                            }`}
                         aria-label={savedJobIds.includes(job.id) ? `Unsave ${job.title}` : `Save ${job.title}`}
                         aria-pressed={savedJobIds.includes(job.id)}
                         onClick={() => toggleSavedJob(job.id)}
@@ -161,9 +168,13 @@ export function ExploreJobsPage() {
                     <p className="mt-1 text-sm text-[#A1A9B8]">
                         {selectedJob.company} · {selectedJob.location}
                     </p>
-                    <p>{selectedJob.salary}</p>
+                    <p className="my-3 text-sm font-semibold">
+                        {selectedJob.salary}
+                    </p>
 
-                    <h3>Required skills</h3>
+                    <h3 className="mb-1 mt-4 text-xs text-[#A1A9B8]">
+                        Required skills
+                    </h3>
                     
                     <div className="flex flex-wrap gap-1.5">
                         {selectedJob.skills.map((skill) => {
