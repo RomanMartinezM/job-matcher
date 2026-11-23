@@ -4,6 +4,7 @@ import { DashboardPage } from "@/pages/DashboardPage"
 import { NotMigratedPage } from "@/pages/NotMigratedPage"
 import { ResumesPage } from "@/pages/ResumesPage"
 import { ExploreJobsPage } from "@/pages/ExploreJobsPage"
+import { ResumeOptimizerPage } from "@/pages/ResumeOptimizerPage"
 
 export const router = createBrowserRouter([
   {
@@ -13,7 +14,7 @@ export const router = createBrowserRouter([
       { index: true, element: <DashboardPage /> },
       { path: "jobs", element: <ExploreJobsPage /> },
       { path: "matches", element: <NotMigratedPage title="AI matches" /> },
-      { path: "optimizer", element: <NotMigratedPage title="Resume optimizer" /> },
+      { path: "optimizer", element: <ResumeOptimizerPage /> },
       { path: "resumes", element: <ResumesPage /> },
       { path: "saved", element: <NotMigratedPage title="Saved jobs" /> },
       { path: "settings", element: <NotMigratedPage title="Settings" /> },
