@@ -1,8 +1,10 @@
-import { candidateSkills,jobs } from "@/data/jobs"
+import { candidateSkills, jobs, rankJobs } from "@/data/jobs"
 import { useState } from "react"
 import { useAppStore } from "@/store/useAppStore"
+import { useNavigate } from "react-router-dom"
 
 export function ExploreJobsPage() {
+    const navigate = useNavigate()
     const savedJobIds = useAppStore((state) => state.savedJobIds)
     const toggleSavedJob = useAppStore((state) => state.toggleSavedJob)
     const [search, setSearch] = useState("")
@@ -22,58 +24,77 @@ export function ExploreJobsPage() {
             !remoteOnly || job.location.toLowerCase().includes("remote")
         
         return matchesSearch && matchesSource && matchesSalary && matchesRemote
-      })
+    })
+
+    function resetFilters() {
+        setSearch("")
+        setSource("All sources")
+        setMinimumSalary(0)
+        setRemoteOnly(false)
+      }
 
     const selectedJob = filteredJobs.find((job) => job.id === selectedJobId) ?? filteredJobs[0]
+    const selectedMatch = selectedJob ? rankJobs([selectedJob])[0]?.matchPercent : undefined
     
     return (
       <main>
         <h1>Explore jobs</h1>
-        <input
-            aria-label="Search jobs"
-            onChange={(event) => setSearch(event.target.value)}
-            placeholder="Title, skill or keyword"
-            value={search}
-        />
-        <select
-            aria-label="Filter by source"
-            onChange={(event) => setSource(event.target.value)}
-            value={source}
-        >
-            <option>All sources</option>
-            <option>Adzuna</option>
-            <option>Arbeitnow</option>
-            <option>Jooble</option>
-            <option>Reed</option>
-            <option>Remotive</option>
-            <option>Jobicy</option>
-            <option>The Muse</option>
-        </select>
+        <div className="mb-4 grid grid-cols-2 gap-2 md:grid-cols-[2fr_1fr_1fr_auto]">
+            <input
+                className="col-span-2 min-h-11 rounded-[10px] border border-[#292F3A] bg-[#101319] px-3 text-sm text-[#F5F7FA] placeholder:text-[#707989] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-300 md:col-span-1"
+                aria-label="Search jobs"
+                onChange={(event) => setSearch(event.target.value)}
+                placeholder="Title, skill or keyword"
+                value={search}
+            />
+            <select
+                className="min-h-11 rounded-[10px] border border-[#292F3A] bg-[#101319] px-3 text-sm text-[#F5F7FA] placeholder:text-[#707989] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-300"
+                aria-label="Filter by source"
+                onChange={(event) => setSource(event.target.value)}
+                value={source}
+            >
+                <option>All sources</option>
+                <option>Adzuna</option>
+                <option>Arbeitnow</option>
+                <option>Jooble</option>
+                <option>Reed</option>
+                <option>Remotive</option>
+                <option>Jobicy</option>
+                <option>The Muse</option>
+            </select>
 
-        <select
-            aria-label="Minimum salary"
-            onChange={(event) => setMinimumSalary(Number(event.target.value))}
-            value={minimumSalary}
-        >
-            <option value={0}>Any salary</option>
-            <option value={100}>$100k+</option>
-            <option value={140}>$140k+</option>
-        </select>
+            <select
+                className="min-h-11 rounded-[10px] border border-[#292F3A] bg-[#101319] px-3 text-sm text-[#F5F7FA] placeholder:text-[#707989] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-300"
+                aria-label="Minimum salary"
+                onChange={(event) => setMinimumSalary(Number(event.target.value))}
+                value={minimumSalary}
+            >
+                <option value={0}>Any salary</option>
+                <option value={100}>$100k+</option>
+                <option value={140}>$140k+</option>
+            </select>
 
-        <button
-            aria-pressed={remoteOnly}
-            onClick={() => setRemoteOnly((current) => !current)}
-            type="button"
-        >
-            {remoteOnly ? "Remote only ✓" : "Remote only"}
-        </button>
-
-        <p>{filteredJobs.length} jobs</p>
+            <button
+                className={`rounded-lg border px-3 py-2 text-sm ${
+                    remoteOnly
+                      ? "border-teal-300 bg-teal-300/10 text-teal-200"
+                      : "border-[#292F3A] text-[#F5F7FA]"
+                  }`}
+                aria-pressed={remoteOnly}
+                onClick={() => setRemoteOnly((current) => !current)}
+                type="button"
+            >
+                {remoteOnly ? "Remote only ✓" : "Remote only"}
+            </button>
+        </div>
+        <p className="mb-2 text-xs text-[#A1A9B8]">
+            {filteredJobs.length} {filteredJobs.length === 1 ? "job" : "jobs"}
+        </p>
   
         {filteredJobs.length > 0 ? (
         <div className="grid gap-4 lg:grid-cols-[1.3fr_1fr]">
             {/* First grid column: your existing list */}
-            <ul>
+            <ul className="grid gap-2.5">
                 {filteredJobs.map((job) => (
                     <li
                         key={job.id}
@@ -134,8 +155,12 @@ export function ExploreJobsPage() {
             <aside className="rounded-xl border border-[#292F3A] bg-[#151922] p-5">
                 {selectedJob ? (
                     <>
-                    <h2>{selectedJob.title}</h2>
-                    <p>{selectedJob.company} · {selectedJob.location}</p>
+                    <h2 className="text-2xl font-semibold tracking-tight">
+                        {selectedJob.title}
+                    </h2>
+                    <p className="mt-1 text-sm text-[#A1A9B8]">
+                        {selectedJob.company} · {selectedJob.location}
+                    </p>
                     <p>{selectedJob.salary}</p>
 
                     <h3>Required skills</h3>
@@ -158,6 +183,28 @@ export function ExploreJobsPage() {
                             )
                         })}
                     </div>
+                    {selectedMatch !== undefined && (
+                        <p className="mt-4 rounded-lg bg-teal-300/[0.08] p-3 text-xs text-teal-200">
+                            You match {selectedMatch}% · highlighted skills are on your resume
+                        </p>
+                    )}
+                    <div className="mt-3 flex flex-wrap gap-2">
+                        <button
+                            className="rounded-lg bg-lime-300 px-4 py-2 font-semibold text-[#101319]"
+                            onClick={() => window.alert(`Applying on ${selectedJob.source}`)}
+                            type="button"
+                        >
+                            Apply on {selectedJob.source}
+                        </button>
+
+                        <button
+                            className="rounded-lg border border-[#292F3A] px-4 py-2 font-semibold text-[#F5F7FA]"
+                            onClick={() => navigate("/optimizer")}
+                            type="button"
+                        >
+                            Optimize resume
+                        </button>
+                    </div>
 
                     </>
                 ) : (
@@ -166,8 +213,21 @@ export function ExploreJobsPage() {
             </aside>
         </div>
         ) : (
-        <p>No jobs match your search. Try another keyword.</p>
+        <div className="rounded-xl border border-[#292F3A] bg-[#151922] p-8 text-center">
+            <h2 className="font-semibold">No jobs match those filters</h2>
+            <p className="mt-2 text-sm text-[#A1A9B8]">
+                Try changing your search or removing a filter.
+            </p>
+            <button
+                className="mt-4 rounded-lg border border-[#292F3A] px-4 py-2 text-sm text-[#F5F7FA]"
+                onClick={resetFilters}
+                type="button"
+            >
+                Reset filters
+            </button>
+        </div>
         )}
+
       </main>
     )
   }
