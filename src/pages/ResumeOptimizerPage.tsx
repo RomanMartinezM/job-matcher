@@ -2,6 +2,7 @@ import { candidateSkills, jobs } from "@/data/jobs"
 import { useAppStore } from "@/store/useAppStore"
 import { Card } from "@/components/ui/card"
 import { useState } from "react"
+import { Button } from "@/components/ui/button"
 
 export function ResumeOptimizerPage() {
   const savedJobIds = useAppStore((state) => state.savedJobIds)
@@ -20,10 +21,14 @@ export function ResumeOptimizerPage() {
   const originalExperience = "Worked on APIs for the billing team."
   const suggestedExperience =
     "Built and maintained APIs supporting the billing team."
-
   const [experienceBullet, setExperienceBullet] = useState(originalExperience)
-  const [experienceSuggestionStatus, setExperienceSuggestionStatus] =
-    useState<"pending" | "accepted" | "rejected">("pending")
+  const [experienceSuggestionStatus, setExperienceSuggestionStatus] = useState<"pending" | "accepted" | "rejected">("pending")
+  const acceptedSuggestions = [
+    summarySuggestionStatus,
+    experienceSuggestionStatus,
+  ].filter((status) => status === "accepted").length
+  const improvementScore = 76 + acceptedSuggestions * 8
+  const atsChecksPassed = 1 + acceptedSuggestions
 
   return (
     <main className="mx-auto w-full max-w-[1180px]">
@@ -55,18 +60,20 @@ export function ResumeOptimizerPage() {
 
       <div className="mt-4 grid items-start gap-3 lg:grid-cols-[1.2fr_1fr]">
          {/* Left column */}
-        <Card className="p-6">
-          <h2 className="text-xl font-semibold">Maya Okafor</h2>
-          <p className="mt-1 text-sm text-[#A1A9B8]">
+         <Card className="min-h-[500px] bg-[#F8FAFC] p-6 text-[#172033]">
+          <h2 className="text-2xl font-bold tracking-tight text-[#172033]">
+            Maya Okafor
+          </h2>
+          <p className="mt-1 border-b border-[#CBD5E1] pb-4 text-sm text-[#64748B]">
             Backend Engineer · Lisbon
           </p>
 
-          <h3 className="mb-1 mt-6 text-xs font-semibold uppercase tracking-wide text-[#A1A9B8]">
+          <h3 className="mb-1 mt-4 text-xs font-semibold uppercase tracking-wide text-[#64748B]">
             Summary
           </h3>
           <p className="text-sm leading-relaxed">{summary}</p>
 
-          <h3 className="mb-1 mt-6 text-xs font-semibold uppercase tracking-wide text-[#A1A9B8]">
+          <h3 className="mb-1 mt-6 text-xs font-semibold uppercase tracking-wide text-[#64748B]">
             Experience · Ledgerly
           </h3>
           <ul className="list-disc space-y-1 pl-5 text-sm leading-relaxed">
@@ -80,18 +87,22 @@ export function ResumeOptimizerPage() {
         <div className="grid content-start gap-3">
           <Card className="p-5">
             <h2 className="font-semibold">Improvement score</h2>
-            <p className="mt-2 text-2xl font-semibold text-teal-300">76 / 100</p>
+            <p className="mt-2 text-2xl font-semibold text-teal-300">{improvementScore} / 100</p>
 
             <div
               aria-label="Improvement score: 76 out of 100"
               className="my-2 h-2 overflow-hidden rounded-full bg-[#232936]"
               role="img"
             >
-              <div className="h-full w-[76%] rounded-full bg-teal-300" />
+            <div
+              className="h-full rounded-full bg-teal-300"
+              style={{ width: `${improvementScore}%` }}
+            />
             </div>
 
             <p className="mt-2 text-sm leading-relaxed text-[#A1A9B8]">
-              ATS check: single column, standard headings, no tables. Passed 3 of 3.
+              ATS check: single column, standard headings, no tables. Passed{" "}
+              {atsChecksPassed} of 3.
             </p>
           </Card>
 
@@ -113,23 +124,23 @@ export function ResumeOptimizerPage() {
 
               {summarySuggestionStatus === "pending" ? (
                 <div className="mt-3 flex flex-wrap gap-2">
-                  <button
-                    className="rounded-lg border border-teal-300/30 bg-teal-300/10 px-3 py-2 text-sm text-teal-100"
+                  <Button
                     onClick={() => {
                       setSummary(suggestedSummary)
                       setSummarySuggestionStatus("accepted")
                     }}
-                    type="button"
+                    size="sm"
+                    variant="default"
                   >
                     Accept
-                  </button>
-                  <button
-                    className="rounded-lg border border-[#292F3A] px-3 py-2 text-sm text-[#F5F7FA]"
+                  </Button>
+                  <Button
                     onClick={() => setSummarySuggestionStatus("rejected")}
-                    type="button"
+                    size="sm"
+                    variant="outline"
                   >
                     Reject
-                  </button>
+                  </Button>
                 </div>
               ) : (
                 <p className="mt-3 text-sm text-[#A1A9B8]">
@@ -154,23 +165,23 @@ export function ResumeOptimizerPage() {
 
               {experienceSuggestionStatus === "pending" ? (
                 <div className="mt-3 flex flex-wrap gap-2">
-                  <button
-                    className="rounded-lg border border-teal-300/30 bg-teal-300/10 px-3 py-2 text-sm text-teal-100"
+                  <Button
                     onClick={() => {
                       setExperienceBullet(suggestedExperience)
                       setExperienceSuggestionStatus("accepted")
                     }}
-                    type="button"
+                    size="sm"
+                    variant="default"
                   >
                     Accept
-                  </button>
-                  <button
-                    className="rounded-lg border border-[#292F3A] px-3 py-2 text-sm text-[#F5F7FA]"
+                  </Button>
+                  <Button
                     onClick={() => setExperienceSuggestionStatus("rejected")}
-                    type="button"
+                    size="sm"
+                    variant="outline"
                   >
                     Reject
-                  </button>
+                  </Button>
                 </div>
               ) : (
                 <p className="mt-3 text-sm text-[#A1A9B8]">
